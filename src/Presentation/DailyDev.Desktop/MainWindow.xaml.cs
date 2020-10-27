@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DailyDev.Infrastructure.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,8 @@ namespace DailyDev.Desktop
         public MainWindow()
         {
             InitializeComponent();
+            Class1 c = new Class1();
+            c.doIt();
         }
     }
 }
