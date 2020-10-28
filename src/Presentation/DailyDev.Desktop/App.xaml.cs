@@ -9,7 +9,7 @@ namespace DailyDev.Desktop
     {
         protected override void RegisterSetup()
         {
-            this.RegisterSetupType<MvxWpfSetup<Ap>>();
+            this.RegisterSetupType<MvxWpfSetup<Core.App>>();
         }
     }
 }
