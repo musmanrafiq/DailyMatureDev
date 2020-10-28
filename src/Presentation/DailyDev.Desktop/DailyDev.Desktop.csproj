@@ -6,4 +6,14 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\DailyDev.Domain.Models\DailyDev.Domain.Models.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\DailyDev.Infrastructure.Services\DailyDev.Infrastructure.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MvvmCross" Version="7.0.0" />
+    <PackageReference Include="MvvmCross.Platforms.Wpf" Version="7.0.0" />
+  </ItemGroup>
+
 </Project>

@@ -1,2 +1,7 @@
 ﻿src/Presentation/DailyDev.Desktop/bin/
 src/Presentation/DailyDev.Desktop/obj/
+src/Infrastructure/DailyDev.Infrastructure.Services/bin/
+src/Infrastructure/DailyDev.Infrastructure.Services/obj/
+src/Domain/DailyDev.Domain.Models/bin
+src/Domain/DailyDev.Domain.Models/obj/
+src/.vs/
