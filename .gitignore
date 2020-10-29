@@ -5,3 +5,6 @@ src/Infrastructure/DailyDev.Infrastructure.Services/obj/
 src/Domain/DailyDev.Domain.Models/bin
 src/Domain/DailyDev.Domain.Models/obj/
 src/.vs/
+src/DailyDevDb.db
+src/Domain/DailyDev.Domain.Data/bin/
+src/Domain/DailyDev.Domain.Data/obj/

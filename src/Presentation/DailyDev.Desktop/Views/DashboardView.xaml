@@ -21,7 +21,8 @@
                 <Button mvx:Bi.nd="Command AddSiteCommand" IsEnabled="{Binding CanAddSite}" Margin="0 0 0 15">Add Site</Button>
             </StackPanel>
 
-            <ListView Margin="10" ItemsSource="{Binding Sites}">
+            <ListView  Margin="10" ItemsSource="{Binding Sites}" mvx:Bi.nd="Command ItemClickedCommand">
+
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <WrapPanel>

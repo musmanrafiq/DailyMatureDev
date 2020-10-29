@@ -1,7 +1,9 @@
-﻿using DailyDev.Domain.Models;
+﻿using DailyDev.Domain.Data;
+using DailyDev.Domain.Models;
 using MvvmCross.Commands;
 using MvvmCross.ViewModels;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace DailyDev.Desktop.ViewModels
 {
@@ -9,12 +11,23 @@ namespace DailyDev.Desktop.ViewModels
     {
         public DashboardViewModel()
         {
+
             AddSiteCommand = new MvxCommand(AddSite);
-            Sites.Add(new SiteModel { Url = "abc" });
-            Sites.Add(new SiteModel { Url = "abc" });
+            ItemClickedCommand = new MvxCommand(ItemClicked);
+
+            using var dbContext = new DailyDevDbContext();
+            var sites = dbContext.SiteModels.ToList();
+            foreach (SiteModel site in sites)
+            {
+                Sites.Add(site);
+            }
         }
 
+        public void ItemClicked()
+        {
+        }
         public IMvxCommand AddSiteCommand { get; set; }
+        public IMvxCommand ItemClickedCommand { get; set; }
         public bool CanAddSite => Url?.Length > 0;
 
         public void AddSite()
@@ -25,6 +38,10 @@ namespace DailyDev.Desktop.ViewModels
             };
             Url = string.Empty;
             Sites.Add(p);
+
+            using var dbContext = new DailyDevDbContext();
+            dbContext.SiteModels.Add(p);
+            dbContext.SaveChanges();
         }
         private ObservableCollection<SiteModel> _sites = new ObservableCollection<SiteModel>();
 
