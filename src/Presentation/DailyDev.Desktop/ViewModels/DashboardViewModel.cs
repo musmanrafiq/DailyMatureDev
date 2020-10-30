@@ -48,6 +48,7 @@ namespace DailyDev.Desktop.ViewModels
         public DashboardViewModel()
         {
 
+            ButtonText = "Add Site";
             AddSiteCommand = new MvxCommand(AddSite);
 
             using var dbContext = new DailyDevDbContext();
@@ -56,12 +57,18 @@ namespace DailyDev.Desktop.ViewModels
             {
                 Sites.Add(site);
             }
+
         }
 
-        public async Task OnItemSelectedAsync(Domain.Models.SiteModel model)
+        public async Task OnItemSelectedAsync(SiteModel model)
         {
             if (model != null)
             {
+                ButtonText = "Update Site";
+                Url = model.Url;
+                Name = model.Name;
+                Id = model.Id;
+
                 FeedService service = new FeedService();
                 var a = await service.FetchAsync(model.Url);
                 BlogTitle = a.Title;
@@ -79,18 +86,38 @@ namespace DailyDev.Desktop.ViewModels
 
         public void AddSite()
         {
-            Domain.Models.SiteModel p = new Domain.Models.SiteModel
+
+            SiteModel site = new SiteModel
             {
+                Id = Id,
                 Url = Url,
                 Name = Name
-
             };
-            Url = string.Empty;
-            Sites.Add(p);
+            //Url = string.Empty;
 
             using var dbContext = new DailyDevDbContext();
-            dbContext.SiteModels.Add(p);
+            if (Id > 0)
+            {
+                dbContext.Update(site);
+            }
+            else
+            {
+                dbContext.SiteModels.Add(site);
+            }
             dbContext.SaveChanges();
+
+            if (Id > 0)
+            {
+                var existingRecord = Sites.FirstOrDefault(x => x.Id == Id);
+                Sites.Remove(existingRecord);
+            }
+
+            Sites.Add(site);
+
+            Id = 0;
+            Url = string.Empty;
+            Name = string.Empty;
+            ButtonText = "Add Site";
         }
         private ObservableCollection<Domain.Models.SiteModel> _sites = new ObservableCollection<Domain.Models.SiteModel>();
 
@@ -98,6 +125,27 @@ namespace DailyDev.Desktop.ViewModels
         {
             get { return _sites; }
             set { SetProperty(ref _sites, value); }
+        }
+
+        private int _id;
+        public int Id
+        {
+            get { return _id; }
+            set
+            {
+                SetProperty(ref _id, value);
+            }
+        }
+
+        private string _buttonText;
+
+        public string ButtonText
+        {
+            get { return _buttonText; }
+            set
+            {
+                SetProperty(ref _buttonText, value);
+            }
         }
 
         private string _name;
