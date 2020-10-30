@@ -18,9 +18,9 @@
             <StackPanel  Margin="10 45 10 5"  DockPanel.Dock="Top" Height="90">
                 <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0 5 0 2" />
                 <TextBox Text="{Binding Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0 2 0 5" />
-                <Button mvx:Bi.nd="Command AddSiteCommand" IsEnabled="{Binding CanAddSite}" Margin="0 0 0 5" >
+                <Button Content="{Binding ButtonText}" mvx:Bi.nd="Command AddSiteCommand" IsEnabled="{Binding CanAddSite}" Margin="0 0 0 5" >
 
-                    <TextBox BorderBrush="Transparent" Background="Transparent" Text="{Binding ButtonText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0 5 0 2" />
+
                 </Button>
             </StackPanel>
 
