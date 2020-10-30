@@ -75,13 +75,15 @@ namespace DailyDev.Desktop.ViewModels
         }
         public IMvxCommand AddSiteCommand { get; set; }
         public IMvxCommand ItemClickedCommand { get; set; }
-        public bool CanAddSite => Url?.Length > 0;
+        public bool CanAddSite => Url?.Length > 0 && Name?.Length > 0;
 
         public void AddSite()
         {
             Domain.Models.SiteModel p = new Domain.Models.SiteModel
             {
-                Url = Url
+                Url = Url,
+                Name = Name
+
             };
             Url = string.Empty;
             Sites.Add(p);
@@ -98,6 +100,17 @@ namespace DailyDev.Desktop.ViewModels
             set { SetProperty(ref _sites, value); }
         }
 
+        private string _name;
+
+        public string Name
+        {
+            get { return _name; }
+            set
+            {
+                SetProperty(ref _name, value);
+                RaisePropertyChanged(() => CanAddSite);
+            }
+        }
         private string _url;
 
         public string Url
