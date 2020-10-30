@@ -3,11 +3,12 @@
     xmlns:mvx="clr-namespace:MvvmCross.Platforms.Wpf.Binding;assembly=MvvmCross.Platforms.Wpf"
      x:Class="DailyDev.Desktop.Views.DashboardView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+   
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:d="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DailyDev.Desktop.Views"
-       
+MinHeight="800"
+    MinWidth="800"
     mc:Ignorable="d">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -15,20 +16,31 @@
             <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
         <DockPanel  Grid.Column="0">
-            <StackPanel Margin="10" DockPanel.Dock="Top" Height="100">
-                <TextBox Text="{Binding Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0 0 0 15" />
-
-                <Button mvx:Bi.nd="Command AddSiteCommand" IsEnabled="{Binding CanAddSite}" Margin="0 0 0 15">Add Site</Button>
+            <StackPanel  Margin="10 15 10 5" DockPanel.Dock="Top" Height="70">
+                <TextBox Text="{Binding Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0 15 0 5" />
+                <Button mvx:Bi.nd="Command AddSiteCommand" IsEnabled="{Binding CanAddSite}" Margin="0 0 0 5">Add Site</Button>
             </StackPanel>
 
-            <ListView  Margin="10" ItemsSource="{Binding Sites}" mvx:Bi.nd="Command ItemClickedCommand">
+            <ListView x:Name="lv"  Margin="10" ItemsSource="{Binding Sites}" >
 
+                <d:Interaction.Triggers>
+                    <d:EventTrigger EventName="MouseDoubleClick" >
+                        <d:InvokeCommandAction Command="{Binding ItemSelectedCommand}" CommandParameter="{Binding  ElementName=lv, Path=SelectedItem}" />
+                    </d:EventTrigger>
+                </d:Interaction.Triggers>
+                <ListView.Resources>
+                    <BitmapImage x:Key="DeleteIconSource" UriSource="/Images/delete_icon.png" />
+                </ListView.Resources>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <WrapPanel>
+                        <StackPanel>
                             <TextBlock Text="Name: " />
+                            <Image Source="{StaticResource DeleteIconSource}" Margin="0,0,5,0" />
                             <TextBlock Text="{Binding Url}" FontWeight="Bold" />
-                        </WrapPanel>
+                            <Button Command="{Binding ElementName=lv, Path=DataContext.RemoveSiteCommand}" CommandParameter="{Binding}">
+                                <TextBlock Text="{Binding}" />
+                            </Button>
+                        </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
@@ -44,7 +56,41 @@
                 <TextBlock Grid.Column="1" VerticalAlignment="Center" TextAlignment="Center">Button 2</TextBlock>
                 <TextBlock Grid.Column="2" VerticalAlignment="Center" TextAlignment="Center">Button 2</TextBlock>
             </Grid>
-            <ListView></ListView>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Background="White" Grid.Row="0" Margin="10" TextAlignment="Center" Text="{Binding BlogTitle}"></TextBlock>
+                <ListView Grid.Row="1" x:Name="blogItems" Margin="10" ItemsSource="{Binding BlogPosts}" >
+
+                    <d:Interaction.Triggers>
+                        <d:EventTrigger EventName="MouseDoubleClick" >
+                            <d:InvokeCommandAction Command="{Binding BlogSelectedCommand}" CommandParameter="{Binding  ElementName=blogItems, Path=SelectedItem}" />
+                        </d:EventTrigger>
+                    </d:Interaction.Triggers>
+                    <ListView.Resources>
+                        <BitmapImage x:Key="DeleteIconSource" UriSource="/Images/delete_icon.png" />
+                    </ListView.Resources>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Text="Name: " />
+                                <Image Source="{StaticResource DeleteIconSource}" Margin="0,0,5,0" />
+                                <TextBlock Text="{Binding Title}" FontWeight="Bold" />
+                                <TextBlock Text="{Binding Description}" FontWeight="Bold" />
+                                <TextBlock Text="{Binding PublishingDateString}" FontWeight="Bold" />
+                                <TextBlock Text="{Binding Link}" FontWeight="Bold" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+            </Grid>
         </DockPanel>
 
     </Grid>

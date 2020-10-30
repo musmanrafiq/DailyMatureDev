@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DailyDev.Domain.Models", "D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DailyDev.Domain.Data", "Domain\DailyDev.Domain.Data\DailyDev.Domain.Data.csproj", "{6D124B7F-86C9-4AA9-A9DD-0B987A908599}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DailyDev.Domain.Business", "Domain\DailyDev.Domain.Business\DailyDev.Domain.Business.csproj", "{C0BD8DBF-5DBC-4363-A8D8-1CB93160CB1B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{6D124B7F-86C9-4AA9-A9DD-0B987A908599}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D124B7F-86C9-4AA9-A9DD-0B987A908599}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D124B7F-86C9-4AA9-A9DD-0B987A908599}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0BD8DBF-5DBC-4363-A8D8-1CB93160CB1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0BD8DBF-5DBC-4363-A8D8-1CB93160CB1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0BD8DBF-5DBC-4363-A8D8-1CB93160CB1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0BD8DBF-5DBC-4363-A8D8-1CB93160CB1B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +54,7 @@ Global
 		{E66B6C27-013C-406E-8246-66F9DB3082A5} = {103A4F67-A2C3-477B-907A-6DDE9C6855D3}
 		{27CA36CC-8D52-4F87-BB0A-37D8CE48CD0F} = {59B70909-8F3E-42AA-BFF6-97CD71765758}
 		{6D124B7F-86C9-4AA9-A9DD-0B987A908599} = {59B70909-8F3E-42AA-BFF6-97CD71765758}
+		{C0BD8DBF-5DBC-4363-A8D8-1CB93160CB1B} = {59B70909-8F3E-42AA-BFF6-97CD71765758}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B73578FD-83BA-4EC9-8B7C-6A98B5CC65C5}

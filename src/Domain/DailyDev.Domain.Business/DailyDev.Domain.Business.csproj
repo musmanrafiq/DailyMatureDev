@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CodeHollow.FeedReader" Version="1.2.1" />
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Domain\DailyDev.Domain.Business\DailyDev.Domain.Business.csproj" />
+    <ProjectReference Include="..\DailyDev.Domain.Models\DailyDev.Domain.Models.csproj" />
   </ItemGroup>
 
 </Project>
