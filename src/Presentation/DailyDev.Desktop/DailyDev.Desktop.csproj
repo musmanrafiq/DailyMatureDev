@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\delete_icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Domain\DailyDev.Domain.Data\DailyDev.Domain.Data.csproj" />
     <ProjectReference Include="..\..\Domain\DailyDev.Domain.Models\DailyDev.Domain.Models.csproj" />
     <ProjectReference Include="..\..\Infrastructure\DailyDev.Infrastructure.Services\DailyDev.Infrastructure.Services.csproj" />
@@ -23,7 +27,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Images\" />
+    <Resource Include="Images\delete_icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>

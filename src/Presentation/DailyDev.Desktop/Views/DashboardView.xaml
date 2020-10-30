@@ -29,7 +29,7 @@
                     </d:EventTrigger>
                 </d:Interaction.Triggers>
                 <ListView.Resources>
-                    <BitmapImage x:Key="DeleteIconSource" UriSource="https://res.cloudinary.com/www-techintalk-com/image/upload/v1604068614/Github%20Projects/DailyMatureDev/delete_icon.png" />
+                    <BitmapImage x:Key="DeleteIconSource" UriSource="../Images/delete_icon.png" />
                 </ListView.Resources>
                 <ListView.ItemTemplate>
                     <DataTemplate>
