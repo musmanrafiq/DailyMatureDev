@@ -9,6 +9,9 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media;
+using System.Windows.Threading;
 using SiteModel = DailyDev.Domain.Models.SiteModel;
 
 namespace DailyDev.Desktop.ViewModels
@@ -64,22 +67,47 @@ namespace DailyDev.Desktop.ViewModels
         {
             if (model != null)
             {
+                BlogPosts.Clear();
                 ButtonText = "Update Site";
                 Url = model.Url;
                 Name = model.Name;
                 Id = model.Id;
 
                 FeedService service = new FeedService();
-                var a = await service.FetchAsync(model.Url);
-                BlogTitle = a.Title;
-                BlogPosts.Clear();
-                foreach (FeedItemModel item in a.Items)
+                var (feedModel, error) = await service.FetchAsync(model.Url);
+                if (feedModel != null)
                 {
-                    BlogPosts.Add(item);
+                    BlogTitle = feedModel.Title;
+                    BlogPosts.Clear();
+                    foreach (FeedItemModel item in feedModel.Items)
+                    {
+                        BlogPosts.Add(item);
+                    }
                 }
+                else
+                {
+                    NotificationBackground = Brushes.Red;
+                    NotificationText = error;
+                    ShowNotification = Visibility.Visible;
 
+
+
+                    await Task.Factory.StartNew(
+    async () =>
+    {
+        await Task.Delay(2000);
+
+        NotificationBackground = Brushes.Green;
+        NotificationText = string.Empty;
+        ShowNotification = Visibility.Collapsed;
+    }
+);
+
+                }
             }
         }
+
+
         public IMvxCommand AddSiteCommand { get; set; }
         public IMvxCommand ItemClickedCommand { get; set; }
         public bool CanAddSite => Url?.Length > 0 && Name?.Length > 0;
@@ -179,6 +207,36 @@ namespace DailyDev.Desktop.ViewModels
             set
             {
                 SetProperty(ref _blogTitle, value);
+            }
+        }
+
+        private Visibility _showNotification;
+        public Visibility ShowNotification
+        {
+            get { return _showNotification; }
+            set
+            {
+                SetProperty(ref _showNotification, value);
+            }
+        }
+
+        private Brush _notificationBackground;
+        public Brush NotificationBackground
+        {
+            get { return _notificationBackground; }
+            set
+            {
+                SetProperty(ref _notificationBackground, value);
+            }
+        }
+
+        private string _notificationText;
+        public string NotificationText
+        {
+            get { return _notificationText; }
+            set
+            {
+                SetProperty(ref _notificationText, value);
             }
         }
 
