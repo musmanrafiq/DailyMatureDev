@@ -1,5 +1,6 @@
 ﻿using DailyDev.Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using System.IO;
 using System.Reflection;
 
 namespace DailyDev.Domain.Data
@@ -10,7 +11,8 @@ namespace DailyDev.Domain.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite(@"Data Source=G:\dot net\DailyMatureDev\src\DailyDevDb.db;", options =>
+            var dbPath = Path.Combine(Directory.GetCurrentDirectory(), "DailyDevDb.db");
+            optionsBuilder.UseSqlite($"Data Source={dbPath}", options =>
             {
                 options.MigrationsAssembly(Assembly.GetExecutingAssembly().FullName);
             });
