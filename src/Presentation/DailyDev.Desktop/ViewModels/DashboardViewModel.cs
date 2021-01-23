@@ -32,6 +32,7 @@ namespace DailyDev.Desktop.ViewModels
 
         private void OnBlogSelectAsync(FeedItemModel item)
         {
+
             var psi = new ProcessStartInfo
             {
                 FileName = item.Link,
@@ -46,6 +47,7 @@ namespace DailyDev.Desktop.ViewModels
             dbContext.Remove(model);
             await dbContext.SaveChangesAsync();
             Sites.Remove(model);
+            TotalBlogsCount = Sites.Count();
         }
 
         public DashboardViewModel()
@@ -56,11 +58,11 @@ namespace DailyDev.Desktop.ViewModels
 
             using var dbContext = new DailyDevDbContext();
             var sites = dbContext.SiteModels.ToList();
-            foreach (Domain.Models.SiteModel site in sites)
+            foreach (SiteModel site in sites)
             {
                 Sites.Add(site);
             }
-
+            TotalBlogsCount = Sites.Count();
         }
 
         public async Task OnItemSelectedAsync(SiteModel model)
@@ -86,6 +88,13 @@ namespace DailyDev.Desktop.ViewModels
                 }
                 else
                 {
+                    var psi = new ProcessStartInfo
+                    {
+                        FileName = model.Url,
+                        UseShellExecute = true
+                    };
+                    Process.Start(psi);
+
                     NotificationBackground = Brushes.Red;
                     NotificationText = error;
                     ShowNotification = Visibility.Visible;
@@ -111,7 +120,7 @@ namespace DailyDev.Desktop.ViewModels
         public IMvxCommand AddSiteCommand { get; set; }
         public IMvxCommand ItemClickedCommand { get; set; }
         public bool CanAddSite => Url?.Length > 0 && Name?.Length > 0;
-
+        public int TotalBlogsCount { get; set; } = 0;
         public void AddSite()
         {
 
@@ -131,6 +140,7 @@ namespace DailyDev.Desktop.ViewModels
             else
             {
                 dbContext.SiteModels.Add(site);
+
             }
             dbContext.SaveChanges();
 
@@ -146,6 +156,8 @@ namespace DailyDev.Desktop.ViewModels
             Url = string.Empty;
             Name = string.Empty;
             ButtonText = "Add Site";
+
+            TotalBlogsCount = Sites.Count();
         }
         private ObservableCollection<Domain.Models.SiteModel> _sites = new ObservableCollection<Domain.Models.SiteModel>();
 

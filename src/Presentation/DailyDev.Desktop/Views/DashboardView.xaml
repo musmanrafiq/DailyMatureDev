@@ -23,10 +23,10 @@
                 <ColumnDefinition Width="3*" />
             </Grid.ColumnDefinitions>
             <DockPanel  Grid.Column="0">
-                <StackPanel  Margin="10 45 10 5"  DockPanel.Dock="Top" Height="90">
-                    <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0 5 0 2" />
-                    <TextBox Text="{Binding Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0 2 0 5" />
-                    <Button Content="{Binding ButtonText}" mvx:Bi.nd="Command AddSiteCommand" IsEnabled="{Binding CanAddSite}" Margin="0 0 0 5" >
+                <StackPanel  Margin="10 0 10 0"  DockPanel.Dock="Top" Height="100">
+                    <TextBox  Margin="0 0 0 0" Height="25"  Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox  Margin="0 5 0 0" Height="25"  Text="{Binding Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button  Margin="0 10 0 0" Height="35" Content="{Binding ButtonText}" mvx:Bi.nd="Command AddSiteCommand" IsEnabled="{Binding CanAddSite}">
 
 
                     </Button>
@@ -56,15 +56,15 @@
                 </ListView>
             </DockPanel>
             <DockPanel   Grid.Column="1">
-                <Grid DockPanel.Dock="Top" Height="100">
+                <Grid Margin="0 0 10 0" Background="#d4a1a1"  DockPanel.Dock="Top" Height="100">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition  Width="*" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <StackPanel VerticalAlignment="Center">
                         <TextBlock VerticalAlignment="Center" TextAlignment="Center">Total Blogs</TextBlock>
-                        <TextBlock VerticalAlignment="Center" TextAlignment="Center">0</TextBlock>
+                        <TextBlock VerticalAlignment="Center" TextAlignment="Center" Text="{Binding TotalBlogsCount , Mode=TwoWay}"></TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
                         <TextBlock VerticalAlignment="Center" TextAlignment="Center">Today's Posts</TextBlock>
@@ -84,8 +84,8 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <TextBlock Background="White" Grid.Row="0" Margin="10" TextAlignment="Center" Text="{Binding BlogTitle}"></TextBlock>
-                    <ListView Grid.Row="1" x:Name="blogItems" Margin="10" ItemsSource="{Binding BlogPosts}" >
+                    <TextBlock Background="LightGray" Grid.Row="0" Margin="0 10 10 0" TextAlignment="Center" Text="{Binding BlogTitle}"></TextBlock>
+                    <ListView Grid.Row="1" x:Name="blogItems" Margin="0 0 10 10" ItemsSource="{Binding BlogPosts}" >
 
                         <d:Interaction.Triggers>
                             <d:EventTrigger EventName="MouseDoubleClick" >
