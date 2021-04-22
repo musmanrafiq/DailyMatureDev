@@ -1,34 +1,96 @@
-﻿using DailyDev.Domain.Business.Models;
+﻿using DailyDev.Desktop.Helpers;
+using DailyDev.Domain.Business.Models;
 using DailyDev.Domain.Data;
-using DailyDev.Domain.Models;
+using DailyDev.Infrastructure.Communication.Services.Smtp;
 using DailyDev.Infrastructure.Services;
 using MvvmCross.Commands;
 using MvvmCross.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
-using System.Windows.Threading;
 using SiteModel = DailyDev.Domain.Models.SiteModel;
 
 namespace DailyDev.Desktop.ViewModels
 {
     public class DashboardViewModel : MvxViewModel
     {
-        private MvxCommand<Domain.Models.SiteModel> _itemSelectedCommand;
+        #region private properties
 
-        public IMvxCommand ItemSelectedCommand => _itemSelectedCommand ?? (_itemSelectedCommand = new MvxCommand<SiteModel>(async (item) => await OnItemSelectedAsync(item)));
+        private List<FeedItemModel> _postsToPublish;
 
-
-        private MvxCommand<Domain.Models.SiteModel> _removeSiteCommand;
-        public IMvxCommand RemoveSiteCommand => _removeSiteCommand ?? (_removeSiteCommand = new MvxCommand<SiteModel>(async (item) => await OnRemoveSiteAsync(item)));
-
+        #endregion
+        #region private commands
+        private MvxCommand<SiteModel> _itemSelectedCommand;
+        private MvxCommand<SiteModel> _removeSiteCommand;
         private MvxCommand<FeedItemModel> _blogSelectedCommand;
+        private MvxCommand _publishCommand;
+        private MvxCommand<FeedItemModel> _addToPublishCommand;
+        private MvxCommand<FeedItemModel> _removeFromPublishCommand;
+        #endregion
 
+        #region public commands for bindings
+        public IMvxCommand ItemSelectedCommand => _itemSelectedCommand ?? (_itemSelectedCommand = new MvxCommand<SiteModel>(async (item) => await OnItemSelectedAsync(item)));
+        public IMvxCommand RemoveSiteCommand => _removeSiteCommand ?? (_removeSiteCommand = new MvxCommand<SiteModel>(async (item) => await OnRemoveSiteAsync(item)));
         public IMvxCommand BlogSelectedCommand => _blogSelectedCommand ?? (_blogSelectedCommand = new MvxCommand<FeedItemModel>(OnBlogSelectAsync));
+        public IMvxCommand PublishCommand => _publishCommand ?? (_publishCommand = new MvxCommand(async () => await OnPublish()));
+        public IMvxCommand AddToPublishCommand => _addToPublishCommand ?? (_addToPublishCommand = new MvxCommand<FeedItemModel>(OnAddToPublish));
+        public IMvxCommand RemoveFromPublishCommand => _removeFromPublishCommand ?? (_removeFromPublishCommand = new MvxCommand<FeedItemModel>(OnRemoveFromPublish));
+        #endregion
+
+        private void OnRemoveFromPublish(FeedItemModel blogPost)
+        {
+            var postToRemove = _postsToPublish.Find(x => x.Id == blogPost.Id);
+            if (postToRemove != null)
+            {
+                _postsToPublish.Remove(postToRemove);
+            }
+        }
+
+        private void OnAddToPublish(FeedItemModel blogPost)
+        {
+            if (!_postsToPublish.Any(x => x.Id == blogPost.Id))
+            {
+                _postsToPublish.Add(blogPost);
+            }
+        }
+
+
+
+        private async Task OnPublish()
+        {
+            if (_postsToPublish.Any())
+            {
+                var htmlHelper = new HtmlHelper();
+                htmlHelper.PrepareHtml("h2", "Information");
+
+                foreach (var item in _postsToPublish)
+                {
+                    htmlHelper.PrepareHtml("div", $"- <a href='{item.Link}'>{item.Title}</a> by {item.Author}");
+                }
+                var htmlBody = htmlHelper.GetHtml();
+                var smtpService = new SmtpService();
+                var prepareTitle = await PrepareTitleForMyBlogPostAsync();
+                smtpService.SendEmail(prepareTitle, htmlBody);
+            }
+        }
+
+        private async Task<string> PrepareTitleForMyBlogPostAsync()
+        {
+
+            FeedService service = new FeedService();
+            var (feedItemModel, error) = await service.FetchLatestPost("https://www.usmanrafiq.com/feeds/posts/default");
+            if (feedItemModel != null)
+            {
+                var postNumber = int.Parse(feedItemModel.Title.Split('#')[1]);
+                return $"The Morning Mash # {postNumber + 1}";
+            }
+            return $"The Morning Mash # {DateTime.Now.ToString("ddmmyyyy")}";
+        }
 
         private void OnBlogSelectAsync(FeedItemModel item)
         {
@@ -52,6 +114,8 @@ namespace DailyDev.Desktop.ViewModels
 
         public DashboardViewModel()
         {
+            //initialize 
+            _postsToPublish = new List<FeedItemModel>();
 
             ButtonText = "Add Site";
             AddSiteCommand = new MvxCommand(AddSite);

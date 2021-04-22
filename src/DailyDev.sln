@@ -15,9 +15,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{59B709
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DailyDev.Domain.Models", "Domain\DailyDev.Domain.Models\DailyDev.Domain.Models.csproj", "{27CA36CC-8D52-4F87-BB0A-37D8CE48CD0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DailyDev.Domain.Data", "Domain\DailyDev.Domain.Data\DailyDev.Domain.Data.csproj", "{6D124B7F-86C9-4AA9-A9DD-0B987A908599}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DailyDev.Domain.Data", "Domain\DailyDev.Domain.Data\DailyDev.Domain.Data.csproj", "{6D124B7F-86C9-4AA9-A9DD-0B987A908599}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DailyDev.Domain.Business", "Domain\DailyDev.Domain.Business\DailyDev.Domain.Business.csproj", "{C0BD8DBF-5DBC-4363-A8D8-1CB93160CB1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DailyDev.Domain.Business", "Domain\DailyDev.Domain.Business\DailyDev.Domain.Business.csproj", "{C0BD8DBF-5DBC-4363-A8D8-1CB93160CB1B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DailyDev.Infrastructure.GoogleAuthentication", "Infrastructure\DailyDev.Infrastructure.GoogleAuthentication\DailyDev.Infrastructure.GoogleAuthentication.csproj", "{0409E610-1B87-4756-A052-216F7135799C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DailyDev.Infrastructure.Communication", "Infrastructure\DailyDev.Infrastructure.Communication\DailyDev.Infrastructure.Communication.csproj", "{2738DAEC-BE9A-4E4A-A225-AD20AE08781A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DailyDev.Infrastructure.Common", "Infrastructure\DailyDev.Infrastructure.Common\DailyDev.Infrastructure.Common.csproj", "{41AA0FFF-454D-40C7-85FE-FBA912E07FD1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +51,18 @@ Global
 		{C0BD8DBF-5DBC-4363-A8D8-1CB93160CB1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0BD8DBF-5DBC-4363-A8D8-1CB93160CB1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0BD8DBF-5DBC-4363-A8D8-1CB93160CB1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0409E610-1B87-4756-A052-216F7135799C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0409E610-1B87-4756-A052-216F7135799C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0409E610-1B87-4756-A052-216F7135799C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0409E610-1B87-4756-A052-216F7135799C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2738DAEC-BE9A-4E4A-A225-AD20AE08781A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2738DAEC-BE9A-4E4A-A225-AD20AE08781A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2738DAEC-BE9A-4E4A-A225-AD20AE08781A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2738DAEC-BE9A-4E4A-A225-AD20AE08781A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41AA0FFF-454D-40C7-85FE-FBA912E07FD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41AA0FFF-454D-40C7-85FE-FBA912E07FD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41AA0FFF-454D-40C7-85FE-FBA912E07FD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41AA0FFF-454D-40C7-85FE-FBA912E07FD1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +73,9 @@ Global
 		{27CA36CC-8D52-4F87-BB0A-37D8CE48CD0F} = {59B70909-8F3E-42AA-BFF6-97CD71765758}
 		{6D124B7F-86C9-4AA9-A9DD-0B987A908599} = {59B70909-8F3E-42AA-BFF6-97CD71765758}
 		{C0BD8DBF-5DBC-4363-A8D8-1CB93160CB1B} = {59B70909-8F3E-42AA-BFF6-97CD71765758}
+		{0409E610-1B87-4756-A052-216F7135799C} = {103A4F67-A2C3-477B-907A-6DDE9C6855D3}
+		{2738DAEC-BE9A-4E4A-A225-AD20AE08781A} = {103A4F67-A2C3-477B-907A-6DDE9C6855D3}
+		{41AA0FFF-454D-40C7-85FE-FBA912E07FD1} = {103A4F67-A2C3-477B-907A-6DDE9C6855D3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B73578FD-83BA-4EC9-8B7C-6A98B5CC65C5}

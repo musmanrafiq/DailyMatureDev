@@ -2,14 +2,16 @@
 using DailyDev.Domain.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DailyDev.Domain.Data.Migrations
 {
     [DbContext(typeof(DailyDevDbContext))]
-    partial class DailyDevDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210422120221_addedBlogs_1")]
+    partial class addedBlogs_1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

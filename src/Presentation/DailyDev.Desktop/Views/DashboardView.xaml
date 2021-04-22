@@ -11,13 +11,18 @@
     mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="0" />
             <RowDefinition Height="25" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
 
         <TextBlock Grid.Row="0" Padding="5"  TextWrapping="Wrap" Background="{Binding NotificationBackground}" Text="{Binding NotificationText}" Foreground="White"  Visibility="{Binding ShowNotification}" />
-        <Grid Grid.Row="1">
+        <Menu Grid.Row="1"  x:Name="menu">
+            <MenuItem Header="File" Name="File" />
+            <MenuItem Header="Publish" Name="Publish"  Command="{Binding PublishCommand}"/>
+        </Menu>
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="3*" />
@@ -26,10 +31,18 @@
                 <StackPanel  Margin="10 0 10 0"  DockPanel.Dock="Top" Height="100">
                     <TextBox  Margin="0 0 0 0" Height="25"  Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <TextBox  Margin="0 5 0 0" Height="25"  Text="{Binding Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Button  Margin="0 10 0 0" Height="35" Content="{Binding ButtonText}" mvx:Bi.nd="Command AddSiteCommand" IsEnabled="{Binding CanAddSite}">
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Button Grid.Column="0"  Margin="0 10 10 10" Height="30" Content="{Binding ButtonText}" mvx:Bi.nd="Command AddSiteCommand" IsEnabled="{Binding CanAddSite}"/>
+                        <Button Grid.Column="1"  Margin="10 10 0 10" Height="30" Content="Reset" mvx:Bi.nd="Command ResetFormCommand" />
+                    </Grid>
 
 
-                    </Button>
                 </StackPanel>
 
                 <ListView x:Name="lv"  Margin="10" ItemsSource="{Binding Sites}" >
@@ -94,20 +107,38 @@
                         </d:Interaction.Triggers>
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel>
+                                <StackPanel Orientation="Vertical" >
                                     <TextBlock Text="{Binding Title}" FontWeight="Bold" />
-                                    <TextBlock Text="{Binding Description}" FontWeight="Bold" />
+                                    <TextBlock  TextWrapping="Wrap" Text="{Binding Description}" FontWeight="Bold" />
                                     <TextBlock Text="{Binding PublishingDateString}" FontWeight="Bold" />
                                     <TextBlock Text="{Binding Link}" FontWeight="Bold" />
+                                    <Grid Width="200" HorizontalAlignment="Left">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Button Grid.Column="0" Command="{Binding ElementName=blogItems, Path=DataContext.AddToPublishCommand}" CommandParameter="{Binding}">
+                                            <TextBlock Text="Add" />
+                                        </Button>
+
+
+
+                                        <Button Grid.Column="1" Command="{Binding ElementName=blogItems, Path=DataContext.RemoveFromPublishCommand}" CommandParameter="{Binding}">
+                                            <TextBlock Text="Remove" />
+                                        </Button>
+                                    </Grid>
                                 </StackPanel>
                             </DataTemplate>
                         </ListView.ItemTemplate>
+                       
                     </ListView>
 
                 </Grid>
             </DockPanel>
 
         </Grid>
+       
 
     </Grid>
 </views:MvxWpfView>

@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Domain\DailyDev.Domain.Data\DailyDev.Domain.Data.csproj" />
     <ProjectReference Include="..\..\Domain\DailyDev.Domain.Models\DailyDev.Domain.Models.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\DailyDev.Infrastructure.Communication\DailyDev.Infrastructure.Communication.csproj" />
     <ProjectReference Include="..\..\Infrastructure\DailyDev.Infrastructure.Services\DailyDev.Infrastructure.Services.csproj" />
   </ItemGroup>
 
@@ -21,6 +22,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="5.0.0" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
     <PackageReference Include="MvvmCross" Version="7.0.0" />
     <PackageReference Include="MvvmCross.Platforms.Wpf" Version="7.0.0" />
@@ -30,6 +37,12 @@
     <Resource Include="Images\delete_icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
