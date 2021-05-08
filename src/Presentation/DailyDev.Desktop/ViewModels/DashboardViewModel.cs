@@ -1,6 +1,8 @@
 ﻿using DailyDev.Desktop.Helpers;
+using DailyDev.Desktop.Views;
 using DailyDev.Domain.Business.Models;
 using DailyDev.Domain.Data;
+using DailyDev.Domain.Models;
 using DailyDev.Infrastructure.Communication.Services.Smtp;
 using DailyDev.Infrastructure.Services;
 using MvvmCross.Commands;
@@ -44,18 +46,24 @@ namespace DailyDev.Desktop.ViewModels
 
         private void OnRemoveFromPublish(FeedItemModel blogPost)
         {
-            var postToRemove = _postsToPublish.Find(x => x.Id == blogPost.Id);
-            if (postToRemove != null)
+            using var dbContext = new DailyDevDbContext();
+            var existingEntry = dbContext.TempLinks.Where(x => x.FeedPostId == blogPost.Id).FirstOrDefault();
+            if (existingEntry != null)
             {
-                _postsToPublish.Remove(postToRemove);
+                dbContext.TempLinks.Remove(existingEntry);
+                dbContext.SaveChanges();
             }
         }
 
         private void OnAddToPublish(FeedItemModel blogPost)
         {
-            if (!_postsToPublish.Any(x => x.Id == blogPost.Id))
+            using var dbContext = new DailyDevDbContext();
+            var hasEixtingEntry = dbContext.TempLinks.Any(x => x.FeedPostId == blogPost.Id);
+
+            if (!hasEixtingEntry)
             {
-                _postsToPublish.Add(blogPost);
+                dbContext.TempLinks.Add(new TempLink { FeedPostId = blogPost.Id, Author = blogPost.Author, Title = blogPost.Title, Url = blogPost.Link });
+                dbContext.SaveChanges();
             }
         }
 
@@ -63,14 +71,19 @@ namespace DailyDev.Desktop.ViewModels
 
         private async Task OnPublish()
         {
-            if (_postsToPublish.Any())
+            PostView p = new PostView();
+            p.ShowDialog();
+
+            using var dbContext = new DailyDevDbContext();
+            var links = dbContext.TempLinks.ToList();
+            if (links.Any())
             {
                 var htmlHelper = new HtmlHelper();
                 htmlHelper.PrepareHtml("h2", "Information");
 
-                foreach (var item in _postsToPublish)
+                foreach (var item in links)
                 {
-                    htmlHelper.PrepareHtml("div", $"- <a href='{item.Link}'>{item.Title}</a> by {item.Author}");
+                    htmlHelper.PrepareHtml("div", $"- <a href='{item.Url}'>{item.Title}</a> by {item.Author}");
                 }
                 var htmlBody = htmlHelper.GetHtml();
                 var smtpService = new SmtpService();

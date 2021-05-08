@@ -2,14 +2,16 @@
 using DailyDev.Domain.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DailyDev.Domain.Data.Migrations
 {
     [DbContext(typeof(DailyDevDbContext))]
-    partial class DailyDevDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210508074551_templinks_feedpostid")]
+    partial class templinks_feedpostid
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
