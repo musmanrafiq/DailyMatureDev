@@ -9,6 +9,9 @@ namespace DailyDev.Domain.Data
     public class DailyDevDbContext : DbContext
     {
         public DbSet<SiteModel> SiteModels { get; set; }
+        public DbSet<TempLink> TempLinks { get; set; }
+
+        #region overrides
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -25,5 +28,7 @@ namespace DailyDev.Domain.Data
         {
             modelBuilder.ApplyConfiguration(new BlogsSeeder());
         }
+
+        #endregion
     }
 }
