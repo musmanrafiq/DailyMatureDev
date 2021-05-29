@@ -1,7 +1,9 @@
-﻿using DailyDev.Domain.Data;
+﻿using DailyDev.Desktop.Core.Commands;
+using DailyDev.Domain.Data;
 using DailyDev.Domain.Models;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
 
 namespace DailyDev.Desktop.ViewModels
 {
@@ -10,18 +12,15 @@ namespace DailyDev.Desktop.ViewModels
 
         #region private fields
 
-        private List<TempLink> _tempLinks;
         private string _summary;
+
+        private readonly DelegateCommand _remotePostItem;
 
         #endregion
 
         #region public fields
 
-        public List<TempLink> TempLinks
-        {
-            get => _tempLinks;
-            set => SetProperty(ref _tempLinks, value);
-        }
+        public ObservableCollection<TempLink> TempLinks { get; set; }
 
         public string Summary
         {
@@ -29,12 +28,34 @@ namespace DailyDev.Desktop.ViewModels
             set => SetProperty(ref _summary, value);
         }
 
+        public ICommand RemovePostItem => _remotePostItem;
+
         #endregion
 
+        #region constructors
         public PostViewModel()
         {
+            TempLinks = new ObservableCollection<TempLink>();
             using var dbContext = new DailyDevDbContext();
-            TempLinks = dbContext.TempLinks.ToList();
+            var list = dbContext.TempLinks.ToList();
+            foreach (var item in list)
+            {
+                TempLinks.Add(item);
+            }
+
+            _remotePostItem = new DelegateCommand(OnRemoveItem, (commandParameter) => { return true; });
         }
+
+        private void OnRemoveItem(object commandParameter)
+        {
+            TempLink tempLink = (TempLink)commandParameter;
+            using var dbContext = new DailyDevDbContext();
+            var a = dbContext.TempLinks.Remove(tempLink);
+            dbContext.SaveChanges();
+            TempLinks.Remove(tempLink);
+        }
+
+        #endregion
+
     }
 }

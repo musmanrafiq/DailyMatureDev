@@ -5,6 +5,8 @@ using DailyDev.Domain.Data;
 using DailyDev.Domain.Models;
 using DailyDev.Infrastructure.Communication.Services.Smtp;
 using DailyDev.Infrastructure.Services;
+using DailyDev.Infrastructure.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using MvvmCross.Commands;
 using MvvmCross.ViewModels;
 using System;
@@ -12,6 +14,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -33,6 +36,15 @@ namespace DailyDev.Desktop.ViewModels
         private MvxCommand _publishCommand;
         private MvxCommand<FeedItemModel> _addToPublishCommand;
         private MvxCommand<FeedItemModel> _removeFromPublishCommand;
+
+        // clipboard commands
+        private MvxCommand _copyToClipboardCommand;
+        private MvxCommand _clearSelectionCommand;
+        private MvxCommand _resetFormCommand;
+        private MvxCommand _showClipboardTextCommand;
+        private MvxCommand _appendReadingToolLinkCommand;
+        private MvxCommand _clearClipboardCommand;
+
         #endregion
 
         #region public commands for bindings
@@ -42,6 +54,37 @@ namespace DailyDev.Desktop.ViewModels
         public IMvxCommand PublishCommand => _publishCommand ?? (_publishCommand = new MvxCommand(async () => await OnPublish()));
         public IMvxCommand AddToPublishCommand => _addToPublishCommand ?? (_addToPublishCommand = new MvxCommand<FeedItemModel>(OnAddToPublish));
         public IMvxCommand RemoveFromPublishCommand => _removeFromPublishCommand ?? (_removeFromPublishCommand = new MvxCommand<FeedItemModel>(OnRemoveFromPublish));
+        public IMvxCommand CopyToClipboardCommand => _copyToClipboardCommand ?? (_copyToClipboardCommand = new MvxCommand(OnCopyToClipboard));
+        public IMvxCommand ClearSelectionCommand => _clearSelectionCommand ?? (_clearSelectionCommand = new MvxCommand(OnClearSelection));
+        public IMvxCommand ResetFormCommand => _resetFormCommand ?? (_resetFormCommand = new MvxCommand(OnResetForm));
+        public IMvxCommand ShowClipboardTextCommand => _showClipboardTextCommand ?? (_showClipboardTextCommand = new MvxCommand(OnShowClipboardText));
+        public IMvxCommand AppendReadingToolLinkCommand => _appendReadingToolLinkCommand ?? (_appendReadingToolLinkCommand = new MvxCommand(OnAppendReadingToolLink));
+        public IMvxCommand ClearClipboardCommand => _clearClipboardCommand ?? (_clearClipboardCommand = new MvxCommand(OnClearClipboard));
+
+        private async void OnClearClipboard()
+        {
+            IClipboardService cService = new ClipboardService();
+            await cService.ClearText();
+        }
+
+        private async void OnAppendReadingToolLink()
+        {
+            IClipboardService cService = new ClipboardService();
+            var htmlBody = await cService.GetText();
+            StringBuilder builder = new StringBuilder(htmlBody);
+            builder.Append("<br/>");
+            builder.Append("<br/>");
+            builder.Append("<a href='https://github.com/musmanrafiq/DailyMatureDev'>Reading Tool : https://github.com/musmanrafiq/DailyMatureDev</a>");
+
+            await cService.CopyText(builder.ToString());
+        }
+
+        private void OnShowClipboardText()
+        {
+            ClipboardView clipboardView = new ClipboardView();
+            clipboardView.ShowDialog();
+        }
+
         #endregion
 
         private void OnRemoveFromPublish(FeedItemModel blogPost)
@@ -71,25 +114,23 @@ namespace DailyDev.Desktop.ViewModels
 
         private async Task OnPublish()
         {
-            PostView p = new PostView();
-            p.ShowDialog();
-
-            using var dbContext = new DailyDevDbContext();
-            var links = dbContext.TempLinks.ToList();
-            if (links.Any())
+            IClipboardService cService = new ClipboardService();
+            var htmlBody = await cService.GetText();
+            if (!string.IsNullOrEmpty(htmlBody))
             {
-                var htmlHelper = new HtmlHelper();
-                htmlHelper.PrepareHtml("h2", "Information");
-
-                foreach (var item in links)
-                {
-                    htmlHelper.PrepareHtml("div", $"- <a href='{item.Url}'>{item.Title}</a> by {item.Author}");
-                }
-                var htmlBody = htmlHelper.GetHtml();
                 var smtpService = new SmtpService();
                 var prepareTitle = await PrepareTitleForMyBlogPostAsync();
                 smtpService.SendEmail(prepareTitle, htmlBody);
             }
+        }
+
+        private void OnResetForm()
+        {
+            Id = 0;
+            Name = string.Empty;
+            Url = string.Empty;
+            Priority = 10;
+            ButtonText = "Add Site";
         }
 
         private async Task<string> PrepareTitleForMyBlogPostAsync()
@@ -134,7 +175,7 @@ namespace DailyDev.Desktop.ViewModels
             AddSiteCommand = new MvxCommand(AddSite);
 
             using var dbContext = new DailyDevDbContext();
-            var sites = dbContext.SiteModels.ToList();
+            var sites = dbContext.SiteModels.OrderBy(x => x.Priority).ToList();
             foreach (SiteModel site in sites)
             {
                 Sites.Add(site);
@@ -151,6 +192,7 @@ namespace DailyDev.Desktop.ViewModels
                 Url = model.Url;
                 Name = model.Name;
                 Id = model.Id;
+                Priority = model.Priority;
 
                 FeedService service = new FeedService();
                 var (feedModel, error) = await service.FetchAsync(model.Url);
@@ -187,12 +229,40 @@ namespace DailyDev.Desktop.ViewModels
         NotificationText = string.Empty;
         ShowNotification = Visibility.Collapsed;
     }
-);
+    );
 
                 }
             }
         }
 
+
+        private async void OnCopyToClipboard()
+        {
+
+            using var dbContext = new DailyDevDbContext();
+            var links = dbContext.TempLinks.ToList();
+            if (links.Any())
+            {
+                var htmlHelper = new HtmlHelper();
+                htmlHelper.PrepareHtml("h2", "Information");
+
+                foreach (var item in links)
+                {
+                    htmlHelper.PrepareHtml("div", $"- <a href='{item.Url}'>{item.Title}</a> by {item.Author}");
+                }
+                var htmlBody = htmlHelper.GetHtml();
+                IClipboardService cService = new ClipboardService();
+                await cService.CopyText(htmlBody);
+            }
+        }
+
+        private async void OnClearSelection()
+        {
+            using var dbContext = new DailyDevDbContext();
+            var links = await dbContext.TempLinks.ToListAsync();
+            dbContext.RemoveRange(links);
+            _ = await dbContext.SaveChangesAsync();
+        }
 
         public IMvxCommand AddSiteCommand { get; set; }
         public IMvxCommand ItemClickedCommand { get; set; }
@@ -205,7 +275,8 @@ namespace DailyDev.Desktop.ViewModels
             {
                 Id = Id,
                 Url = Url,
-                Name = Name
+                Name = Name,
+                Priority = Priority
             };
             //Url = string.Empty;
 
@@ -228,6 +299,7 @@ namespace DailyDev.Desktop.ViewModels
             }
 
             Sites.Add(site);
+            //Sites = Sites.OrderBy(x => x.Priority);
 
             Id = 0;
             Url = string.Empty;
@@ -238,7 +310,7 @@ namespace DailyDev.Desktop.ViewModels
         }
         private ObservableCollection<Domain.Models.SiteModel> _sites = new ObservableCollection<Domain.Models.SiteModel>();
 
-        public ObservableCollection<Domain.Models.SiteModel> Sites
+        public ObservableCollection<SiteModel> Sites
         {
             get { return _sites; }
             set { SetProperty(ref _sites, value); }
@@ -285,6 +357,17 @@ namespace DailyDev.Desktop.ViewModels
             {
                 SetProperty(ref _url, value);
                 RaisePropertyChanged(() => CanAddSite);
+            }
+        }
+
+        private int _priority;
+
+        public int Priority
+        {
+            get { return _priority; }
+            set
+            {
+                SetProperty(ref _priority, value);
             }
         }
 

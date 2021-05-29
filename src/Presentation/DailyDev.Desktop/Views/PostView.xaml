@@ -14,12 +14,16 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
+            <RowDefinition Height="100" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBox 
-             Grid.Row="0" Margin="0 10 10 0" TextAlignment="Center" Text="{Binding Summary}"></TextBox>
-        <ListView Grid.Row="1" x:Name="blogItems" Margin="0 0 10 10" ItemsSource="{Binding TempLinks}" >
+        <TextBlock Grid.Row="0" FontSize="20" Text="Add Summary"></TextBlock>
+        <TextBox TextAlignment="Left" Height="100"
+                AcceptsTab="True" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"
+                 
+             Grid.Row="1" Margin="0 10 10 0" Text="{Binding Summary}"></TextBox>
+        <ListView Grid.Row="2" x:Name="blogItems" Margin="0 0 10 10"  ItemsSource="{Binding TempLinks}" >
 
             <dd:Interaction.Triggers>
                 <dd:EventTrigger EventName="MouseDoubleClick" >
@@ -39,13 +43,7 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
-                            <Button Grid.Column="0" Command="{Binding ElementName=blogItems, Path=DataContext.AddToPublishCommand}" CommandParameter="{Binding}">
-                                <TextBlock Text="Add" />
-                            </Button>
-
-
-
-                            <Button Grid.Column="1" Command="{Binding ElementName=blogItems, Path=DataContext.RemoveFromPublishCommand}" CommandParameter="{Binding}">
+                            <Button Grid.Column="1" Command="{Binding ElementName=blogItems, Path=DataContext.RemovePostItem}" CommandParameter="{Binding}">
                                 <TextBlock Text="Remove" />
                             </Button>
                         </Grid>
