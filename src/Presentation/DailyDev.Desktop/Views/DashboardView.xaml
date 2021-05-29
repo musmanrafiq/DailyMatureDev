@@ -19,8 +19,17 @@
 
         <TextBlock Grid.Row="0" Padding="5"  TextWrapping="Wrap" Background="{Binding NotificationBackground}" Text="{Binding NotificationText}" Foreground="White"  Visibility="{Binding ShowNotification}" />
         <Menu Grid.Row="1"  x:Name="menu">
-            <MenuItem Header="File" Name="File" />
-            <MenuItem Header="Publish" Name="Publish"  Command="{Binding PublishCommand}"/>
+            <MenuItem Header="File" Name="File">
+                <MenuItem Header="Publish" Name="Publish"  Command="{Binding PublishCommand}"/>
+             </MenuItem>
+            <MenuItem Header="Clipboard" Name="Clipboard">
+                <MenuItem Header="Copy To Clipboard" Name="CopyToClipboard"  Command="{Binding CopyToClipboardCommand}" />
+                <MenuItem Header="Show Clipboard Text" Name="ShowClipboardText"  Command="{Binding ShowClipboardTextCommand}" />
+                <MenuItem Header="Clear Selection" Name="ClearSelection"  Command="{Binding ClearSelectionCommand}" />
+                <MenuItem Header="Append ReadingTool Link" Name="AppendReadingToolLink"  Command="{Binding AppendReadingToolLinkCommand}" />
+                <MenuItem Header="Clear Clipboard" Name="clearClipboard"  Command="{Binding ClearClipboardCommand}" />
+
+            </MenuItem>
         </Menu>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
@@ -28,10 +37,10 @@
                 <ColumnDefinition Width="3*" />
             </Grid.ColumnDefinitions>
             <DockPanel  Grid.Column="0">
-                <StackPanel  Margin="10 0 10 0"  DockPanel.Dock="Top" Height="100">
+                <StackPanel  Margin="10 0 10 0"  DockPanel.Dock="Top" Height="125">
                     <TextBox  Margin="0 0 0 0" Height="25"  Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <TextBox  Margin="0 5 0 0" Height="25"  Text="{Binding Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
+                    <TextBox  Margin="0 5 0 0" Height="25"  Text="{Binding Priority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
