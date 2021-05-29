@@ -74,7 +74,6 @@ namespace DailyDev.Desktop.ViewModels
             StringBuilder builder = new StringBuilder(htmlBody);
             builder.Append("<br/>");
             builder.Append("<br/>");
-            builder.Append("<br/>");
             builder.Append("<a href='https://github.com/musmanrafiq/DailyMatureDev'>Reading Tool : https://github.com/musmanrafiq/DailyMatureDev</a>");
 
             await cService.CopyText(builder.ToString());
