@@ -31,7 +31,7 @@
 
             </MenuItem>
         </Menu>
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="2" Margin="0 10 0 0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="3*" />
@@ -78,7 +78,7 @@
                 </ListView>
             </DockPanel>
             <DockPanel   Grid.Column="1">
-                <Grid Margin="0 0 10 0" Background="#d4a1a1"  DockPanel.Dock="Top" Height="100">
+                <Grid Margin="0 0 10 0" Background="#6DB0F3"  DockPanel.Dock="Top" Height="100">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition  Width="*" />
                         <ColumnDefinition Width="*" />
@@ -118,10 +118,8 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Vertical" >
                                     <TextBlock Text="{Binding Title}" FontWeight="Bold" />
-                                    <TextBlock  TextWrapping="Wrap" Text="{Binding Description}" FontWeight="Bold" />
                                     <TextBlock Text="{Binding PublishingDateString}" FontWeight="Bold" />
-                                    <TextBlock Text="{Binding Link}" FontWeight="Bold" />
-                                    <Grid Width="200" HorizontalAlignment="Left">
+                                    <Grid Width="200" HorizontalAlignment="Left" Margin="20">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="*" />

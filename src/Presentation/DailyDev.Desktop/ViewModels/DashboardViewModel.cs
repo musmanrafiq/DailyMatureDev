@@ -174,15 +174,20 @@ namespace DailyDev.Desktop.ViewModels
             ButtonText = "Add Site";
             AddSiteCommand = new MvxCommand(AddSite);
 
+            SetupSites();
+        }
+
+        private void SetupSites()
+        {
             using var dbContext = new DailyDevDbContext();
             var sites = dbContext.SiteModels.OrderBy(x => x.Priority).ToList();
+            Sites.Clear();
             foreach (SiteModel site in sites)
             {
                 Sites.Add(site);
             }
             TotalBlogsCount = Sites.Count();
         }
-
         public async Task OnItemSelectedAsync(SiteModel model)
         {
             if (model != null)
@@ -291,22 +296,11 @@ namespace DailyDev.Desktop.ViewModels
 
             }
             dbContext.SaveChanges();
-
-            if (Id > 0)
-            {
-                var existingRecord = Sites.FirstOrDefault(x => x.Id == Id);
-                Sites.Remove(existingRecord);
-            }
-
-            Sites.Add(site);
-            //Sites = Sites.OrderBy(x => x.Priority);
-
             Id = 0;
             Url = string.Empty;
             Name = string.Empty;
             ButtonText = "Add Site";
-
-            TotalBlogsCount = Sites.Count();
+            SetupSites();
         }
         private ObservableCollection<Domain.Models.SiteModel> _sites = new ObservableCollection<Domain.Models.SiteModel>();
 
