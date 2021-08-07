@@ -38,6 +38,7 @@ namespace DailyDev.Desktop.ViewModels
         private MvxCommand<FeedItemModel> _addToPublishCommand;
         private MvxCommand<FeedItemModel> _removeFromPublishCommand;
         private MvxCommand _searchCommand;
+        private MvxCommand _addSiteCommand;
 
         // clipboard commands
         private MvxCommand _copyToClipboardCommand;
@@ -63,7 +64,7 @@ namespace DailyDev.Desktop.ViewModels
         public IMvxCommand AppendReadingToolLinkCommand => _appendReadingToolLinkCommand ?? (_appendReadingToolLinkCommand = new MvxCommand(OnAppendReadingToolLink));
         public IMvxCommand ClearClipboardCommand => _clearClipboardCommand ?? (_clearClipboardCommand = new MvxCommand(OnClearClipboard));
         public IMvxCommand SearchCommand => _searchCommand ?? (_searchCommand = new MvxCommand(OnSearch));
-
+        public IMvxCommand AddSiteCommand => _addSiteCommand ?? (_addSiteCommand = new MvxCommand(async () => await AddSiteAsync()));
         private void OnSearch()
         {
             SetupSites(this.Search.Trim().ToLower());
@@ -180,8 +181,6 @@ namespace DailyDev.Desktop.ViewModels
             _postsToPublish = new List<FeedItemModel>();
 
             ButtonText = "Add Site";
-            AddSiteCommand = new MvxCommand(AddSite);
-
             SetupSites();
         }
 
@@ -286,11 +285,10 @@ namespace DailyDev.Desktop.ViewModels
             _ = await dbContext.SaveChangesAsync();
         }
 
-        public IMvxCommand AddSiteCommand { get; set; }
         public IMvxCommand ItemClickedCommand { get; set; }
         public bool CanAddSite => Url?.Length > 0 && Name?.Length > 0;
         public int TotalBlogsCount { get; set; } = 0;
-        public void AddSite()
+        public async Task AddSiteAsync()
         {
 
             SiteModel site = new SiteModel
@@ -300,7 +298,6 @@ namespace DailyDev.Desktop.ViewModels
                 Name = Name,
                 Priority = Priority
             };
-            //Url = string.Empty;
 
             using var dbContext = new DailyDevDbContext();
             if (Id > 0)
@@ -309,7 +306,26 @@ namespace DailyDev.Desktop.ViewModels
             }
             else
             {
-                dbContext.SiteModels.Add(site);
+                var alreadyExists = dbContext.SiteModels.Any(x => x.Url.Trim().ToLower() == Url.Trim().ToLower());
+                if (!alreadyExists)
+                    dbContext.SiteModels.Add(site);
+                else
+                {
+                    NotificationBarHeight = 25;
+                    NotificationBackground = Brushes.Red;
+                    NotificationText = "Site already exists";
+                    ShowNotification = Visibility.Visible;
+                    await Task.Factory.StartNew(async () =>
+                          {
+                              await Task.Delay(2000);
+
+                              NotificationBackground = Brushes.White;
+                              NotificationText = string.Empty;
+                              ShowNotification = Visibility.Hidden;
+                              NotificationBarHeight = 0;
+                          }
+                        );
+                }
 
             }
             dbContext.SaveChanges();
@@ -412,6 +428,16 @@ namespace DailyDev.Desktop.ViewModels
             set
             {
                 SetProperty(ref _showNotification, value);
+            }
+        }
+
+        private int _notificationBarHeight;
+        public int NotificationBarHeight
+        {
+            get { return _notificationBarHeight; }
+            set
+            {
+                SetProperty(ref _notificationBarHeight, value);
             }
         }
 
