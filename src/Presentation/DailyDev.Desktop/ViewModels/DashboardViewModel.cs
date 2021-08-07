@@ -29,6 +29,7 @@ namespace DailyDev.Desktop.ViewModels
         private List<FeedItemModel> _postsToPublish;
 
         #endregion
+
         #region private commands
         private MvxCommand<SiteModel> _itemSelectedCommand;
         private MvxCommand<SiteModel> _removeSiteCommand;
@@ -36,6 +37,7 @@ namespace DailyDev.Desktop.ViewModels
         private MvxCommand _publishCommand;
         private MvxCommand<FeedItemModel> _addToPublishCommand;
         private MvxCommand<FeedItemModel> _removeFromPublishCommand;
+        private MvxCommand _searchCommand;
 
         // clipboard commands
         private MvxCommand _copyToClipboardCommand;
@@ -60,6 +62,12 @@ namespace DailyDev.Desktop.ViewModels
         public IMvxCommand ShowClipboardTextCommand => _showClipboardTextCommand ?? (_showClipboardTextCommand = new MvxCommand(OnShowClipboardText));
         public IMvxCommand AppendReadingToolLinkCommand => _appendReadingToolLinkCommand ?? (_appendReadingToolLinkCommand = new MvxCommand(OnAppendReadingToolLink));
         public IMvxCommand ClearClipboardCommand => _clearClipboardCommand ?? (_clearClipboardCommand = new MvxCommand(OnClearClipboard));
+        public IMvxCommand SearchCommand => _searchCommand ?? (_searchCommand = new MvxCommand(OnSearch));
+
+        private void OnSearch()
+        {
+            SetupSites(this.Search.Trim().ToLower());
+        }
 
         private async void OnClearClipboard()
         {
@@ -177,10 +185,19 @@ namespace DailyDev.Desktop.ViewModels
             SetupSites();
         }
 
-        private void SetupSites()
+        private void SetupSites(string searchString = "")
         {
+            List<SiteModel> sites;
             using var dbContext = new DailyDevDbContext();
-            var sites = dbContext.SiteModels.OrderBy(x => x.Priority).ToList();
+            var query = dbContext.SiteModels.OrderBy(x => x.Priority);
+            if (string.IsNullOrEmpty(searchString))
+            {
+                sites = query.ToList();
+            }
+            else
+            {
+                sites = query.Where(x => x.Name.ToLower().Contains(searchString) || x.Url.ToLower().Contains(searchString)).ToList();
+            }
             Sites.Clear();
             foreach (SiteModel site in sites)
             {
@@ -373,6 +390,18 @@ namespace DailyDev.Desktop.ViewModels
             set
             {
                 SetProperty(ref _blogTitle, value);
+            }
+        }
+
+
+        private string _search;
+
+        public string Search
+        {
+            get { return _search; }
+            set
+            {
+                SetProperty(ref _search, value);
             }
         }
 
