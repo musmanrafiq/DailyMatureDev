@@ -11,6 +11,9 @@ namespace DailyDev.CodeWiki.Desktop
         {
             if(e.KeyCode == Keys.Enter)
             {
+                // dispable sound on enter press
+                e.Handled = e.SuppressKeyPress = true;
+
                 await Task.Run(() =>
                 {
                     searchProgress.Value = 0;
