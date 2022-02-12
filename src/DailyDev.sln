@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30204.135
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{932C969B-29B9-4604-B750-B380F6EBA4D6}"
 EndProject
@@ -23,7 +23,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DailyDev.Infrastructure.Goo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DailyDev.Infrastructure.Communication", "Infrastructure\DailyDev.Infrastructure.Communication\DailyDev.Infrastructure.Communication.csproj", "{2738DAEC-BE9A-4E4A-A225-AD20AE08781A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DailyDev.Infrastructure.Common", "Infrastructure\DailyDev.Infrastructure.Common\DailyDev.Infrastructure.Common.csproj", "{41AA0FFF-454D-40C7-85FE-FBA912E07FD1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DailyDev.Infrastructure.Common", "Infrastructure\DailyDev.Infrastructure.Common\DailyDev.Infrastructure.Common.csproj", "{41AA0FFF-454D-40C7-85FE-FBA912E07FD1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DailyDev.Web", "Presentation\DailyDev.Web\DailyDev.Web.csproj", "{2FDA18CE-27AC-4FCE-9A82-6957ADB8853F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{4FDC9392-ACB7-4374-B760-DE5E7A32F542}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DailyDev.Web.Tests", "Tests\DailyDev.Web.Tests\DailyDev.Web.Tests.csproj", "{DD0581A7-20CF-4CCD-BA7E-D746C9622B59}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DailyDev.CodeWiki.Desktop", "Presentation\DailyDev.CodeWiki.Desktop\DailyDev.CodeWiki.Desktop.csproj", "{38AA3479-8CF9-4B40-A1F0-F73E979C84F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +71,18 @@ Global
 		{41AA0FFF-454D-40C7-85FE-FBA912E07FD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41AA0FFF-454D-40C7-85FE-FBA912E07FD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41AA0FFF-454D-40C7-85FE-FBA912E07FD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FDA18CE-27AC-4FCE-9A82-6957ADB8853F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FDA18CE-27AC-4FCE-9A82-6957ADB8853F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FDA18CE-27AC-4FCE-9A82-6957ADB8853F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FDA18CE-27AC-4FCE-9A82-6957ADB8853F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD0581A7-20CF-4CCD-BA7E-D746C9622B59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD0581A7-20CF-4CCD-BA7E-D746C9622B59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD0581A7-20CF-4CCD-BA7E-D746C9622B59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD0581A7-20CF-4CCD-BA7E-D746C9622B59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38AA3479-8CF9-4B40-A1F0-F73E979C84F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38AA3479-8CF9-4B40-A1F0-F73E979C84F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38AA3479-8CF9-4B40-A1F0-F73E979C84F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38AA3479-8CF9-4B40-A1F0-F73E979C84F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -76,6 +96,9 @@ Global
 		{0409E610-1B87-4756-A052-216F7135799C} = {103A4F67-A2C3-477B-907A-6DDE9C6855D3}
 		{2738DAEC-BE9A-4E4A-A225-AD20AE08781A} = {103A4F67-A2C3-477B-907A-6DDE9C6855D3}
 		{41AA0FFF-454D-40C7-85FE-FBA912E07FD1} = {103A4F67-A2C3-477B-907A-6DDE9C6855D3}
+		{2FDA18CE-27AC-4FCE-9A82-6957ADB8853F} = {932C969B-29B9-4604-B750-B380F6EBA4D6}
+		{DD0581A7-20CF-4CCD-BA7E-D746C9622B59} = {4FDC9392-ACB7-4374-B760-DE5E7A32F542}
+		{38AA3479-8CF9-4B40-A1F0-F73E979C84F5} = {932C969B-29B9-4604-B750-B380F6EBA4D6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B73578FD-83BA-4EC9-8B7C-6A98B5CC65C5}
